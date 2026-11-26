@@ -27,6 +27,13 @@ def main() -> None:
     path = os.path.join(out_dir, "entry.txt")
     with open(path, "w", encoding="utf-8", newline="") as f:
         f.write(REPLY)
+    # Read back and verify byte-for-byte: the file must hold exactly
+    # the one-sentence reply, nothing more and nothing less.
+    with open(path, "r", encoding="utf-8", newline="") as f:
+        written = f.read()
+    assert written == REPLY, "entry.txt does not match REPLY"
+    assert 1 <= len(written) <= 200, "entry.txt outside 1-200 chars"
+    assert written.count(".") == 1 and written.endswith(".")
 
 
 if __name__ == "__main__":
